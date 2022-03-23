@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Deep Learning @ IFCA</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link type= "text/css" rel="stylesheet" href="./static/css/normalize.css">
+    <link type= "text/css" rel="stylesheet" href="./static/css/skeleton.css">
+    <link type= "text/css" rel="stylesheet" href="./static/css/general.css">
+    <link type= "text/css" rel="stylesheet" href="./static/css/custom.css">
+
+	<!-- Scripts
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="./static/images/favicon.png">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+          <h1 class="center"  style="margin-top: 25%">Plant Recognition Demo</h1>
+        </section>
+        
+        <div class="docs-section" id="intro">
+        <div class="row">
+            <div class="eight columns offset-by-two column">
+            
+                <!-- Error messages. -->
+                {% with flashes = get_flashed_messages() %}
+                    {% if flashes %}
+                      {% for message in flashes %}
+                        <div class="flashesdiv">
+                        {{ message }} 
+                        </div><br>
+                      {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                This is a simple didactic demo that shows:
+                    <ul>
+                        <li>how the image is processed all along the net (by showing the intermediate layer outputs) before returning the prediction results. </li>
+                        <li>the saliency maps of the input (ie. the maps that show which parts of the image where more influential in the decision making).</li>
+                </ul>
+                    
+                <p>If you just want to make predictions as accurately as possible, use preferably <a href="http://deep.ifca.es/plants">deep.ifca.es/plants</a> because, unlike this little demo, it uses random ten-crop batching and multimage averaging at test time to improve the predictions.</p>
+                <br>
+                
+                <!-- Url submissions. -->
+                <center><h4>Submit image url</h4></center> 
+                <br>
+                <form action="url_upload" method="POST"> 
+                    <div class="embed-submit-field center">
+                        <div class="row"><div class="eight columns offset-by-two column">
+                        <input type="text" name="url" placeholder="Image url" class='u-full-width'>
+                        </div></div>
+                        <button name="submit-button" type="submit" class="button button-primary">Submit</button> 
+                    </div> 
+                </form> 
+                <br><br>
+
+                <!-- Local image submissions. -->
+                <center><h4>Submit local image</h4></center> 
+                <br>
+                <form action="local_upload" method="POST" enctype="multipart/form-data">
+                    <center><input type="file" multiple="" name="local_files"></center> 
+                    <br>
+                    <div class="center" >
+                        <button name="submit-button" type="submit" class="button button-primary">Submit</button> 
+                    </div>
+                </form>
+                
+                
+                <br>
+
+                    
+                    <h5>More</h5>
+                    <ul>
+                        <li>Check our species <a href="./labels">database</a>.</li>
+                    </ul>
+                    
+                <br><br><br>
+                    
+                
+                <div class="footer">
+                  <img src="./static/images/logoIFCA.png" width="250"><br>
+                  Ignacio Heredia | October 2017 <br>
+                  iheredia@ifca.unican.es<br>
+                  CSS by Dave Gamache
+                </div>
+            
+            </div>
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

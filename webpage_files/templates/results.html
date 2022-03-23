@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Deep Learning @ IFCA</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link type= "text/css" rel="stylesheet" href="./static/css/normalize.css">
+    <link type= "text/css" rel="stylesheet" href="./static/css/skeleton.css">
+    <link type= "text/css" rel="stylesheet" href="./static/css/general.css">
+    <link type= "text/css" rel="stylesheet" href="./static/css/custom.css">
+
+	<!-- Scripts
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+    <script>
+        
+    var predictions = {{ predictions|tojson }};        
+    
+    window.onload = function any_function_name()
+    { 
+        var outputs = document.getElementById("show_layer_outputs");
+        var i;
+        for (i = 0; i < predictions.layer_names.length; i++) {
+            var p = document.createElement("p");
+            p.className = "center";
+            var sub_title = document.createElement("h3");
+            sub_title.innerHTML = predictions.layer_names[i];
+            p.appendChild(sub_title);
+            for (j = 0; j < predictions.layer_images_path[i].length; j++) {
+                var image = document.createElement("img");
+                image.src = predictions.layer_images_path[i][j];
+                p.appendChild(image);
+            }
+            outputs.appendChild(p);
+        }
+        
+        var outputs = document.getElementById("show_saliency_maps");
+        var i;
+        for (i = 0; i < predictions.saliency_maps.length; i++) {
+            var image = document.createElement("img");
+            image.src = predictions.saliency_maps[i];
+            outputs.appendChild(image);
+        }
+    }        
+        
+    var predictions_text = "";
+    var i;
+    for (i = 0; i < predictions.pred_lab.length; i++) {
+        predictions_text += '<b>' + (i+1) + '.</b> &nbsp; ' + predictions.pred_lab[i]  + ' &nbsp; | &nbsp; <i>' + Math.round(predictions.pred_prob[i] * 100) + '</i> %';
+        predictions_text += '<div class="comments">'//<b>Info</b><br> ';
+        predictions_text += '<a target="_blank" href="' + predictions.google_images_link[i] + '">Images</a> | ';
+        predictions_text += '<a target="_blank" href="' + predictions.wikipedia_link[i] + '">Wikipedia</a> <br>';     
+        predictions_text += predictions.info[i];
+        predictions_text += '</div><br>';
+    }
+        
+    </script>
+
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="./static/images/favicon.png">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <h1 class="center"  style="margin-top: 25%">Plant Recognition Demo</h1>
+        </section>
+        
+        <div class="docs-section" id="intro">
+            <img class="center" src="./static/images/demo_cnn.png" width="800"/>
+            <br>A standard convolutional neural network (<a href="https://commons.wikimedia.org/wiki/File:Typical_cnn.png">source</a>).</i>
+            <br><br>
+            <h5>Contents</h5>
+            <ul>
+                <li><a href="#layer_outputs">Layer outputs</a></li>
+                <li><a href="#net_predictions">Net predictions</a></li>
+                <li><a href="#saliency_maps">Saliency maps</a></li>
+            </ul>
+            
+            <br><br>
+            <h2 class="center" id="layer_outputs">Intermediate layer outputs</h2>
+        </div>
+    </div>
+      
+    <p id="show_layer_outputs"></p>
+              
+    <div class="container">
+        <br>
+        <h2 class="center" id="net_predictions">Predictions</h2>
+        <p id="show_predictions"></p>
+        <script>document.getElementById("show_predictions").innerHTML = predictions_text;</script>
+        <br>
+
+        <h2 class="center" id="saliency_maps">Saliency maps</h2>
+        These maps show which part of the image where more influential (yellow) in the classifying the image as <span id="first_specie"></span>. The maps where made using the <a href="https://arxiv.org/abs/1412.6806">guided backpropagation</a> technique.
+        <script>document.getElementById("first_specie").innerHTML = predictions.pred_lab[0];</script>
+    </div>    
+        
+        <br><br>
+        <p class="center" id="show_saliency_maps"></p>
+        <br><br>
+
+    <div class="container">
+        <form action="./">
+            <div class="center">
+            <button name="newquery" type="submit">New query</button>
+            </div>
+        </form>
+    </div>
+    
+    <br><br><br><br>
+    
+                
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
